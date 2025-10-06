@@ -26,16 +26,16 @@ function toggleConfirmPassword() {
             <p class="text-sm text-center">Sign up to your account</p>
             <br>
             <br>
-            <form action="" class="flex flex-col p-5 gap-5">
-                <div class="input-email w-full flex flex-col gap-1">
+            <form action="" class="flex flex-col p-5">
+                <div class="input-email w-full flex flex-col gap-1 mb-5">
                     <Label for="email">Email</Label>
                     <Input type="email" placeholder="your email" />
                 </div>
-                <div class="input-username w-full flex flex-col gap-1">
+                <div class="input-username w-full flex flex-col gap-1 mb-5">
                     <Label for="username">Username</Label>
                     <Input type="usernme" placeholder="your usernme" />
                 </div>
-                <div class="input-password w-full flex flex-col gap-1">
+                <div class="input-password w-full flex flex-col gap-1 mb-5">
                     <Label for="password">Password</Label>
                     <div class="relative">
                         <Input id="password" :type="showPassword ? 'text' : 'password'" placeholder="your password"
@@ -46,7 +46,7 @@ function toggleConfirmPassword() {
                         </button>
                     </div>
                 </div>
-                <div class="input-confirm-password w-full flex flex-col gap-1">
+                <div class="input-confirm-password w-full flex flex-col gap-1 mb-5">
                     <Label for="confimPassword">Confirm Password</Label>
                     <div class="relative">
                         <Input id="confimPassword" :type="showConfirmPassword ? 'text' : 'password'"
@@ -57,8 +57,12 @@ function toggleConfirmPassword() {
                         </button>
                     </div>
                 </div>
-                <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer">Sign Up</Button>
-                <div class="flex flex-row items-center justify-center w-[42%] mx-auto gap-5">
+                <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3">Sign Up</Button>
+                <p class="text-sm text-right">already have an account? <router-link to="/auth/login"
+                        class="text-blue-600 underline">Sign
+                        In</router-link>
+                </p>
+                <div class="flex flex-row items-center justify-center w-[42%] mx-auto gap-5 mb-5 mt-5">
                     <Separator />
                     <p class="px-2">or</p>
                     <Separator />
