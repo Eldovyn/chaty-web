@@ -3,6 +3,20 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { AiOutlineEye } from 'vue-icons-lib/ai'
+import { ref } from "vue"
+import { AiOutlineEyeInvisible } from 'vue-icons-lib/ai'
+
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
+
+function togglePassword() {
+    showPassword.value = !showPassword.value
+}
+
+function toggleConfirmPassword() {
+    showConfirmPassword.value = !showConfirmPassword.value
+}
 </script>
 
 <template>
@@ -23,11 +37,25 @@ import { Separator } from '@/components/ui/separator'
                 </div>
                 <div class="input-password w-full flex flex-col gap-1">
                     <Label for="password">Password</Label>
-                    <Input type="password" placeholder="your password" />
+                    <div class="relative">
+                        <Input id="password" :type="showPassword ? 'text' : 'password'" placeholder="your password"
+                            class="pr-10" />
+                        <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
+                            <AiOutlineEye @click="togglePassword" v-if="!showPassword" class="w-4 h-4" />
+                            <AiOutlineEyeInvisible @click="togglePassword" v-else class="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
-                <div class="input-password w-full flex flex-col gap-1">
-                    <Label for="confirmPassword">Confirm Password</Label>
-                    <Input type="password" placeholder="your password" />
+                <div class="input-confirm-password w-full flex flex-col gap-1">
+                    <Label for="confimPassword">Confirm Password</Label>
+                    <div class="relative">
+                        <Input id="confimPassword" :type="showConfirmPassword ? 'text' : 'password'"
+                            placeholder="your password" class="pr-10" />
+                        <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
+                            <AiOutlineEye @click="toggleConfirmPassword" v-if="!showConfirmPassword" class="w-4 h-4" />
+                            <AiOutlineEyeInvisible @click="toggleConfirmPassword" v-else class="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
                 <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer">Sign Up</Button>
                 <div class="flex flex-row items-center justify-center w-[42%] mx-auto gap-5">
