@@ -38,6 +38,9 @@ importers:
       vue:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
+      vue-icons-lib:
+        specifier: ^2.0.3
+        version: 2.0.3(typescript@5.9.3)
       vue-router:
         specifier: '4'
         version: 4.5.1(vue@3.5.22(typescript@5.9.3))
@@ -856,6 +859,9 @@ packages:
       '@vue/composition-api':
         optional: true
 
+  vue-icons-lib@2.0.3:
+    resolution: {integrity: sha512-kqA01KvgGP00C9vYu3SkoT8MDAT7O4QfoQz07hXecu7idoRpCkNotGWbFIcCQF+VlERxQG7TY1g7JXxwkhM8ig==}
+
   vue-router@4.5.1:
     resolution: {integrity: sha512-ogAF3P97NPm8fJsE4by9dwSYtDwXIY1nFY9T6DyQnGHd1E2Da94w9JIolpe42LJGIl0DwOHBi8TcRPlPGwbTtw==}
     peerDependencies:
@@ -1541,6 +1547,12 @@ snapshots:
   vue-demi@0.14.10(vue@3.5.22(typescript@5.9.3)):
     dependencies:
       vue: 3.5.22(typescript@5.9.3)
+
+  vue-icons-lib@2.0.3(typescript@5.9.3):
+    dependencies:
+      vue: 3.5.22(typescript@5.9.3)
+    transitivePeerDependencies:
+      - typescript
 
   vue-router@4.5.1(vue@3.5.22(typescript@5.9.3)):
     dependencies:
