@@ -8,9 +8,9 @@ const route = useRoute()
 
 <template>
   <SidebarProvider>
-    <AppSidebar v-if="route.meta.sidebar" class="hidden sm:block" />
+    <AppSidebar v-if="route.meta.sidebar" />
     <main class="flex-1">
-      <SidebarTrigger v-if="route.meta.sidebar" class="hidden sm:block" />
+      <SidebarTrigger v-if="route.meta.sidebar" />
       <RouterView />
     </main>
   </SidebarProvider>
