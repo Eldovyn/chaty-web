@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-vue-next"
 import {
     Sidebar,
     SidebarContent,
@@ -10,33 +9,13 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { CiChat1 } from 'vue-icons-lib/ci'
 
-// Menu items.
 const items = [
     {
-        title: "Home",
+        title: "New Chat",
         url: "#",
-        icon: Home,
-    },
-    {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
+        icon: CiChat1,
     },
 ];
 </script>
@@ -45,7 +24,7 @@ const items = [
     <Sidebar>
         <SidebarContent>
             <SidebarGroup>
-                <SidebarGroupLabel>Application</SidebarGroupLabel>
+                <SidebarGroupLabel>Chaty</SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenu>
                         <SidebarMenuItem v-for="item in items" :key="item.title">
