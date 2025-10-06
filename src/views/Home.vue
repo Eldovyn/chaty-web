@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea'
 </script>
 
 <template>
-    <div class="flex flex-row-reverse gap-5 me-5">
+    <div class="flex-row-reverse gap-5 me-5 hidden sm:flex">
         <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer w-20">Sign In</Button>
         <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer w-20">Sign Up</Button>
     </div>
