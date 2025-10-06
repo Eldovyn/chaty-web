@@ -31,7 +31,8 @@ function togglePassword() {
                     <div class="relative">
                         <Input id="password" :type="showPassword ? 'text' : 'password'" placeholder="your password"
                             class="pr-10" />
-                        <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
+                        <button type="button"
+                            class="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer">
                             <AiOutlineEye @click="togglePassword" v-if="!showPassword" class="w-4 h-4" />
                             <AiOutlineEyeInvisible @click="togglePassword" v-else class="w-4 h-4" />
                         </button>
