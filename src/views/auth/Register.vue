@@ -16,6 +16,7 @@ const inputFormRegister = reactive<RegisterInput>({
     email: '',
     password: '',
     confirm_password: '',
+    provider: ''
 })
 
 const formErrors = reactive<FormErrorsRegister>({
@@ -148,10 +149,16 @@ const handleValidation = (errors: FormErrorsRegister) => {
     formErrors.password_match = errors.password_match || []
 };
 
+const apiRegister = async (input: RegisterInput) => {
+    const response = await axiosInstance.post('/auth/register', input)
+    return response.data
+}
+
 const { mutate } = useMutation({
     mutationFn: async (input: RegisterInput) => {
-        const response = await axiosInstance.post('/auth/register', input)
-        return response.data
+        input.provider = 'auth_internal'
+        const response = apiRegister(input)
+        return response
     },
     onError: (error) => {
         const err = error as AxiosError<ErrorResponse>;

@@ -3,6 +3,7 @@ declare interface RegisterInput {
     email: string;
     password: string;
     confirm_password: string;
+    provider: string
 }
 
 declare interface FormErrorsRegister {
