@@ -53,6 +53,9 @@ importers:
       vue-sonner:
         specifier: ^2.0.9
         version: 2.0.9
+      vue3-cookies:
+        specifier: ^1.0.6
+        version: 1.0.6(typescript@5.9.3)
     devDependencies:
       '@types/node':
         specifier: ^24.6.0
@@ -1008,6 +1011,9 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
+  vue3-cookies@1.0.6:
+    resolution: {integrity: sha512-a1UvVD0qIgxyOqjlSOwnLnqAnz8ASltugEv8yX+96i/WGZAN9fEDci7xO4HIWZE1uToUnRq9JnFhvfDCSo45OA==}
+
   vue@3.5.22:
     resolution: {integrity: sha512-toaZjQ3a/G/mYaLSbV+QsQhIdMo9x5rrqIpYRObsJ6T/J+RyCSFwN2LHNVH9v8uIcljDNa3QzPVdv3Y6b9hAJQ==}
     peerDependencies:
@@ -1811,6 +1817,12 @@ snapshots:
       '@volar/typescript': 2.4.23
       '@vue/language-core': 3.1.0(typescript@5.9.3)
       typescript: 5.9.3
+
+  vue3-cookies@1.0.6(typescript@5.9.3):
+    dependencies:
+      vue: 3.5.22(typescript@5.9.3)
+    transitivePeerDependencies:
+      - typescript
 
   vue@3.5.22(typescript@5.9.3):
     dependencies:
