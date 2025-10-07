@@ -255,10 +255,14 @@ function onSubmit() {
                     </p>
                 </div>
                 <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3">Sign Up</Button>
-                <p class="text-[12px] text-right">already have an account? <router-link to="/auth/login"
-                        class="text-blue-600 underline">Sign
-                        In</router-link>
-                </p>
+                <div class="flex justify-between">
+                    <p class="text-[12px] text-right">already have an account? <router-link to="/auth/login"
+                            class="text-blue-600 underline">Sign
+                            In</router-link>
+                    </p>
+                    <router-link to="/auth/login" class="text-blue-600 underline text-[12px]">forgot
+                        password</router-link>
+                </div>
                 <div class="flex flex-row items-center justify-center w-[42%] mx-auto gap-5 mb-5 mt-5">
                     <Separator />
                     <p class="px-2">or</p>
