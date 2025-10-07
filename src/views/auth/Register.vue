@@ -180,6 +180,11 @@ const { mutate } = useMutation({
     },
     onSuccess: async (data) => {
         toast.success(data.message)
+        inputFormRegister.email = ''
+        inputFormRegister.username = ''
+        inputFormRegister.password = ''
+        inputFormRegister.confirm_password = ''
+        inputFormRegister.provider = ''
     },
 })
 
