@@ -185,8 +185,8 @@ const { mutate } = useMutation({
         toast.error((err.response?.data?.message as string) || '');
         return;
     },
-    onSuccess: async (data) => {
-        toast.success(data.message)
+    onSuccess: async () => {
+        toast.success('check your email for verification')
         inputFormRegister.email = ''
         inputFormRegister.username = ''
         inputFormRegister.password = ''
