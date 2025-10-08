@@ -147,7 +147,7 @@ function onSubmit() {
 
 <template>
     <section class="login h-screen bg-[#f5f5f5] flex justify-center items-center">
-        <div class="flex flex-col w-[30%] p-10 bg-white rounded-md text-black">
+        <div class="flex flex-col xl:w-[30%] lg:w-[50%] md:w-[50%] w-[80%] p-10 bg-white rounded-md text-black">
             <h1 class="text-3xl font-bold text-center">Welcome Back To Chaty</h1>
             <p class="text-sm text-center">Sign in to your account</p>
             <br>
@@ -177,7 +177,8 @@ function onSubmit() {
                         {{ passwordErrorMessage }}
                     </p>
                 </div>
-                <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3">Sign In</Button>
+                <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 w-full">Sign
+                    In</Button>
                 <p class="text-[12px] text-right mb-5">dont have an account? <router-link to="/register"
                         class="text-blue-600 underline">sign up</router-link>
                 </p>
@@ -188,13 +189,13 @@ function onSubmit() {
                 </div>
                 <div class="flex flex-row gap-5 justify-center w-[95%] mx-auto">
                     <Button type="button"
-                        class="bg-black hover:bg-black flex justify-center items-center w-1/2 cursor-pointer">
-                        <img src="/icon-google.png" alt="" class="w-8">
+                        class="bg-black hover:bg-black flex justify-center items-center xl:w-1/2 md:w-[50%] cursor-pointer">
+                        <img src="/icon-google.png" alt="" class="xl:w-8 lg:w-6 w-5">
                         <p>Sign In With Google</p>
                     </Button>
                     <Button type="button"
-                        class="bg-white hover:bg-white flex justify-center items-center w-1/2 border border-black cursor-pointer">
-                        <img src="/icon-github.png" alt="" class="w-6">
+                        class="bg-white hover:bg-white flex justify-center items-center xl:w-1/2 md:w-[50%] border border-black cursor-pointer">
+                        <img src="/icon-github.png" alt="" class="xl:w-6 lg:w-4 w-2">
                         <p class="text-black">Sign In With Github</p>
                     </Button>
                 </div>
