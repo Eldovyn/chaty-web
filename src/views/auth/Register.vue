@@ -10,6 +10,13 @@ import { useMutation } from '@tanstack/vue-query'
 import { AxiosError } from 'axios'
 import { axiosInstance } from '@/lib/axios'
 import { toast } from 'vue-sonner'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goToLogin = async () => {
+    router.push('/login')
+}
 
 const inputFormRegister = reactive<RegisterInput>({
     username: '',
@@ -185,6 +192,7 @@ const { mutate } = useMutation({
         inputFormRegister.password = ''
         inputFormRegister.confirm_password = ''
         inputFormRegister.provider = ''
+        goToLogin()
     },
 })
 
@@ -268,8 +276,8 @@ function onSubmit() {
                 </div>
                 <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3">Sign Up</Button>
                 <div class="flex justify-between">
-                    <p class="text-[12px] text-right">already have an account? <router-link to="/auth/login"
-                            class="text-blue-600 underline">Sign
+                    <p class="text-[12px] text-right">already have an account? <router-link to="/login"
+                            class="text-blue-600 underline">sign
                             In</router-link>
                     </p>
                     <router-link to="/auth/login" class="text-blue-600 underline text-[12px]">forgot

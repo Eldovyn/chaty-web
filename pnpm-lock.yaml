@@ -44,6 +44,9 @@ importers:
       vue:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
+      vue-cookies:
+        specifier: ^1.8.6
+        version: 1.8.6
       vue-icons-lib:
         specifier: ^2.0.3
         version: 2.0.3(typescript@5.9.3)
@@ -972,6 +975,9 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
+  vue-cookies@1.8.6:
+    resolution: {integrity: sha512-e2kYaHj1Y/zVsBSM3KWlOoVJ5o3l4QZjytNU7xdCgmkw3521CMUerqHekBGZKXXC1oRxYljBeeOK2SCel6cKuw==}
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -1794,6 +1800,8 @@ snapshots:
       lightningcss: 1.30.1
 
   vscode-uri@3.1.0: {}
+
+  vue-cookies@1.8.6: {}
 
   vue-demi@0.14.10(vue@3.5.22(typescript@5.9.3)):
     dependencies:
