@@ -24,6 +24,7 @@
     "vue-cookies": "^1.8.6",
     "vue-icons-lib": "^2.0.3",
     "vue-router": "4",
+    "vue-socket.io-extended": "^4.2.0",
     "vue-sonner": "^2.0.9",
     "vue3-cookies": "^1.0.6"
   },

@@ -53,6 +53,9 @@ importers:
       vue-router:
         specifier: '4'
         version: 4.5.1(vue@3.5.22(typescript@5.9.3))
+      vue-socket.io-extended:
+        specifier: ^4.2.0
+        version: 4.2.0
       vue-sonner:
         specifier: ^2.0.9
         version: 2.0.9
@@ -528,6 +531,9 @@ packages:
   '@types/node@24.6.2':
     resolution: {integrity: sha512-d2L25Y4j+W3ZlNAeMKcy7yDsK425ibcAOO2t7aPTz6gNMH0z2GThtwENCDc0d/Pw9wgyRqE5Px1wkV7naz8ang==}
 
+  '@types/socket.io-client@1.4.36':
+    resolution: {integrity: sha512-ZJWjtFBeBy1kRSYpVbeGYTElf6BqPQUkXDlHHD4k/42byCN5Rh027f4yARHCink9sKAkbtGZXEAmR0ZCnc2/Ag==}
+
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
 
@@ -997,6 +1003,9 @@ packages:
     peerDependencies:
       vue: ^3.2.0
 
+  vue-socket.io-extended@4.2.0:
+    resolution: {integrity: sha512-3ZHy53W4CpzRdTZjWL7krq80FQlnK6IyOG0ur158pij1PXKyVBYDpjE0/3SluK7NeNTqefa/Y8RFCFy6BISG/g==}
+
   vue-sonner@2.0.9:
     resolution: {integrity: sha512-i6BokNlNDL93fpzNxN/LZSn6D6MzlO+i3qXt6iVZne3x1k7R46d5HlFB4P8tYydhgqOrRbIZEsnRd3kG7qGXyw==}
     peerDependencies:
@@ -1345,6 +1354,8 @@ snapshots:
   '@types/node@24.6.2':
     dependencies:
       undici-types: 7.13.0
+
+  '@types/socket.io-client@1.4.36': {}
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -1817,6 +1828,10 @@ snapshots:
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.22(typescript@5.9.3)
+
+  vue-socket.io-extended@4.2.0:
+    dependencies:
+      '@types/socket.io-client': 1.4.36
 
   vue-sonner@2.0.9: {}
 
