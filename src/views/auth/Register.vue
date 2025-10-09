@@ -12,6 +12,7 @@ import { axiosInstance } from '@/lib/axios'
 import { toast } from 'vue-sonner'
 import { useRouter } from 'vue-router'
 import { io } from 'socket.io-client';
+import { Spinner } from '@/components/ui/spinner'
 
 const socket = io(`${import.meta.env.VITE_API_URL}/validate-register`);
 if (!socket) {
@@ -232,9 +233,8 @@ const { mutate } = useMutation({
         const response = apiRegister(input)
         return response
     },
-    onError: (error) => {
+    onError: async (error) => {
         const err = error as AxiosError<ErrorResponse>;
-        console.log(err.response?.data);
         if (err.response?.status === 400 && err.response.data.errors) {
             handleValidation({
                 email: err.response?.data?.errors?.email ?? [],
@@ -245,9 +245,11 @@ const { mutate } = useMutation({
                 password_match: err.response?.data?.errors?.password_match ?? [],
             });
             toast.error(err.response?.data?.message);
+            isSubmitting.value = false
             return;
         }
         toast.error((err.response?.data?.message as string) || '');
+        isSubmitting.value = false
         return;
     },
     onSuccess: async () => {
@@ -258,13 +260,15 @@ const { mutate } = useMutation({
         inputFormRegister.confirm_password = ''
         inputFormRegister.provider = ''
         goToLogin()
+        isSubmitting.value = false
     },
 })
 
 function onSubmit() {
-    isSubmitting.value = true
+    if (isSubmitting.value) return;
+
+    isSubmitting.value = true;
     mutate({ ...inputFormRegister })
-    isSubmitting.value = false
 }
 </script>
 
@@ -275,7 +279,7 @@ function onSubmit() {
             <p class="text-sm text-center">Sign up to your account</p>
             <br>
             <br>
-            <form @submit.prevent="onSubmit" class="flex flex-col p-5">
+            <form @submit.prevent="onSubmit" :disabled="isSubmitting" class="flex flex-col p-5">
                 <div
                     :class="{ 'input-email w-full flex flex-col gap-1': true, 'mb-5': !isEmailError, 'mb-3': isEmailError }">
                     <Label for="email">Email</Label>
@@ -341,7 +345,11 @@ function onSubmit() {
                         {{ passwordMatchErrorMessage }}
                     </p>
                 </div>
-                <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3">Sign Up</Button>
+                <Button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 flex justify-center items-center gap-5">
+                    <Spinner v-if="isSubmitting" />
+                    <p>Sign Up</p>
+                </Button>
                 <div class="flex justify-between">
                     <p class="text-[12px] text-right">already have an account? <router-link to="/login"
                             class="text-blue-600 underline">sign
