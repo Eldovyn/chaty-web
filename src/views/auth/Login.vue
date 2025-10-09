@@ -215,7 +215,7 @@ const onSubmit = () => {
                     </p>
                 </div>
                 <Button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 w-full  flex justify-center items-center gap-5">
+                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 w-full  flex justify-center items-center gap-3">
                     <Spinner v-if="isSubmitting" />
                     <p>Sign In</p>
                 </Button>
