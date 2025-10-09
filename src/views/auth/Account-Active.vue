@@ -23,28 +23,28 @@ const handleValidation = (errors: FormErrorsOTP) => {
     formErrors.otp = errors.otp || []
 };
 
-const socket = io(`${import.meta.env.VITE_API_URL}/otp-activation`);
-if (!socket) {
+const socketValidationOTP = io(`${import.meta.env.VITE_API_URL}/otp-activation`);
+if (!socketValidationOTP) {
     throw new Error('Socket not provided');
 }
 
 onMounted(() => {
-    socket.on('connect', () => {
+    socketValidationOTP.on('connect', () => {
         console.log('socket connected (setup)');
     });
-    socket.on('validation', (data: { errors: FormErrorsOTP; success: boolean }) => {
+    socketValidationOTP.on('validation', (data: { errors: FormErrorsOTP; success: boolean }) => {
         console.log(data);
         handleValidation(data.errors);
     });
 });
 
 onBeforeUnmount(() => {
-    socket.off('connect');
-    socket.off('validation');
+    socketValidationOTP.off('connect');
+    socketValidationOTP.off('validation');
 });
 
 function validateField(payload: { otp?: string }) {
-    socket.emit('validation', {
+    socketValidationOTP.emit('validation', {
         otp: payload.otp, token: token
     });
 }

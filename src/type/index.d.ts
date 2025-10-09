@@ -6,6 +6,31 @@ declare interface RegisterInput {
     provider: string
 }
 
+declare namespace NodeJS {
+    interface Timeout {
+        // define the properties and methods of the Timeout type
+    }
+}
+
+declare interface AccountActiveResponse {
+    data?: {
+        created_at: string;
+        expired_at: string;
+        id: string;
+        token?: string;
+        updated_at: number;
+    },
+    message: string,
+    user: {
+        email?: string;
+        id: string;
+        username: string;
+        avatar: string;
+        is_active: boolean;
+        provider: string
+    }
+}
+
 declare interface LoginInput {
     email: string;
     password: string;
