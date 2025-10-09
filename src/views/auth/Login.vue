@@ -13,6 +13,7 @@ import { toast } from 'vue-sonner'
 import { useRouter } from 'vue-router'
 import { useCookies } from '@/composables/useCookies'
 import { io } from 'socket.io-client';
+import { Spinner } from '@/components/ui/spinner'
 
 const formErrors = reactive<FormErrorsLogin>({
     email: [],
@@ -141,7 +142,7 @@ const { mutate } = useMutation({
         const response = apiLogin(input)
         return response
     },
-    onError: (error) => {
+    onError: async (error) => {
         const err = error as AxiosError<ErrorResponse>;
         if (err.response?.status === 400 && err.response.data.errors) {
             handleValidation({
@@ -149,15 +150,18 @@ const { mutate } = useMutation({
                 password: err.response?.data?.errors?.password ?? [],
             });
             toast.error(err.response?.data?.message);
+            isSubmitting.value = false
             return;
         }
         if (err.response?.status === 403) {
             clearValidation();
             clearForm();
             toast.error('check your email for verification');
+            isSubmitting.value = false
             return;
         }
         toast.error((err.response?.data?.message as string) || '');
+        isSubmitting.value = false
         return;
     },
     onSuccess: async (data) => {
@@ -166,13 +170,15 @@ const { mutate } = useMutation({
         clearValidation();
         cookies.set('access_token', data.token.access_token);
         goToHome();
+        isSubmitting.value = false
     },
 })
 
-function onSubmit() {
-    isSubmitting.value = true
+const onSubmit = () => {
+    if (isSubmitting.value) return;
+
+    isSubmitting.value = true;
     mutate({ ...inputFormLogin })
-    isSubmitting.value = false
 }
 </script>
 
@@ -183,7 +189,7 @@ function onSubmit() {
             <p class="text-sm text-center">Sign in to your account</p>
             <br>
             <br>
-            <form @submit.prevent="onSubmit" class="flex flex-col p-5">
+            <form @submit.prevent="onSubmit" :disabled="isSubmitting" class="flex flex-col p-5">
                 <div class="input-email w-full flex flex-col gap-1 mb-5">
                     <Label for="email">Email</Label>
                     <Input type="text" v-model="inputFormLogin.email" placeholder="your email"
@@ -208,8 +214,11 @@ function onSubmit() {
                         {{ passwordErrorMessage }}
                     </p>
                 </div>
-                <Button type="submit" class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 w-full">Sign
-                    In</Button>
+                <Button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 w-full  flex justify-center items-center gap-5">
+                    <Spinner v-if="isSubmitting" />
+                    <p>Sign In</p>
+                </Button>
                 <p class="text-[12px] text-right mb-5">dont have an account? <router-link to="/register"
                         class="text-blue-600 underline">sign up</router-link>
                 </p>
