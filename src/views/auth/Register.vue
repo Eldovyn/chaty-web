@@ -4,13 +4,78 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { AiOutlineEye } from 'vue-icons-lib/ai'
-import { ref, reactive, computed } from "vue"
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue"
 import { AiOutlineEyeInvisible } from 'vue-icons-lib/ai'
 import { useMutation } from '@tanstack/vue-query'
 import { AxiosError } from 'axios'
 import { axiosInstance } from '@/lib/axios'
 import { toast } from 'vue-sonner'
 import { useRouter } from 'vue-router'
+import { io } from 'socket.io-client';
+
+const socket = io(`${import.meta.env.VITE_API_URL}/validate-register`);
+if (!socket) {
+    throw new Error('Socket not provided');
+}
+
+onMounted(() => {
+    socket.on('connect', () => {
+        console.log('socket connected (setup)');
+    });
+    socket.on('connect_error', (err) => {
+        console.error('socket connect error:', err);
+    });
+    socket.on('disconnect', (reason) => {
+        console.log('socket disconnected:', reason);
+    });
+    socket.on('validation', (data) => {
+        console.log('Received validation:', data);
+        handleValidation(data.errors);
+    });
+});
+
+onBeforeUnmount(() => {
+    socket.off('connect');
+    socket.off('validation');
+});
+
+function validateField(payload: { email?: string; password?: string; username?: string; confirm_password?: string }) {
+    socket.emit('validation', {
+        email: payload.email ?? inputFormRegister.email,
+        password: payload.password ?? inputFormRegister.password,
+        username: payload.username ?? inputFormRegister.username,
+        confirm_password: payload.confirm_password ?? inputFormRegister.confirm_password,
+        provider: 'auth_internal'
+    });
+}
+
+const onEmailInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    inputFormRegister.email = val;
+    validateField({ email: val });
+}
+
+const onUsernameInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    inputFormRegister.username = val;
+    validateField({ username: val });
+}
+
+const onConfirmPasswordInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    inputFormRegister.confirm_password = val;
+    validateField({ confirm_password: val });
+}
+
+const onPasswordInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    inputFormRegister.password = val;
+    validateField({ password: val });
+}
 
 const router = useRouter()
 
@@ -215,7 +280,7 @@ function onSubmit() {
                     :class="{ 'input-email w-full flex flex-col gap-1': true, 'mb-5': !isEmailError, 'mb-3': isEmailError }">
                     <Label for="email">Email</Label>
                     <Input type="text" v-model="inputFormRegister.email" placeholder="your email"
-                        :class="{ 'border border-red-500': isEmailError }" />
+                        :class="{ 'border border-red-500': isEmailError }" @input="onEmailInput" />
                     <p v-if="isEmailError" class="text-[10px] text-right me-3 text-[#C10007]">
                         {{ emailErrorMessage }}
                     </p>
@@ -224,7 +289,7 @@ function onSubmit() {
                     :class="{ 'input-username w-full flex flex-col gap-1': true, 'mb-5': !isUsernameError, 'mb-3': isUsernameError }">
                     <Label for="username">Username</Label>
                     <Input type="text" v-model="inputFormRegister.username" placeholder="your usernme"
-                        :class="{ 'border border-red-500': isUsernameError }" />
+                        :class="{ 'border border-red-500': isUsernameError }" @input="onUsernameInput" />
                     <p v-if="isUsernameError" class="text-[10px] text-right me-3 text-[#C10007]">
                         {{ usernameErrorMessage }}
                     </p>
@@ -235,7 +300,8 @@ function onSubmit() {
                     <div class="relative">
                         <Input id="password" v-model="inputFormRegister.password"
                             :type="showPassword ? 'text' : 'password'" placeholder="your password"
-                            :class="{ 'border border-red-500': isPasswordError || isPasswordMatchError || isPasswordSecurityError }" />
+                            :class="{ 'border border-red-500': isPasswordError || isPasswordMatchError || isPasswordSecurityError }"
+                            @input="onPasswordInput" />
                         <button type="button"
                             class="absolute inset-y-0 right-3 flex items-center text-gray-500 cusror-pointer">
                             <AiOutlineEye @click="togglePassword" v-if="!showPassword"
@@ -254,7 +320,8 @@ function onSubmit() {
                     <div class="relative">
                         <Input id="confimPassword" v-model="inputFormRegister.confirm_password"
                             :type="showConfirmPassword ? 'text' : 'password'" placeholder="your password"
-                            :class="{ 'border border-red-500': isConfirmPasswordError || isPasswordMatchError || isPasswordSecurityError }" />
+                            :class="{ 'border border-red-500': isConfirmPasswordError || isPasswordMatchError || isPasswordSecurityError }"
+                            @input="onConfirmPasswordInput" />
                         <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
                             <AiOutlineEye @click="toggleConfirmPassword" v-if="!showConfirmPassword"
                                 :class="{ 'w-4 h-4 cursor-pointer': true, 'text-red-500': isConfirmPasswordError || isPasswordMatchError || isPasswordSecurityError }" />
