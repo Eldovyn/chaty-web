@@ -26,6 +26,10 @@ declare interface FormErrorsLogin {
     password?: string[];
 }
 
+declare interface FormErrorsOTP {
+    otp?: string[]
+}
+
 declare interface ErrorResponse {
     message: string;
     errors?: {

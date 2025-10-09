@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import { ref } from "vue"
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue"
 import { useMutation } from '@tanstack/vue-query'
 import { AxiosError } from 'axios'
 import { axiosInstance } from '@/lib/axios'
@@ -13,6 +13,54 @@ import {
 } from "@/components/ui/pin-input"
 import { useRoute, useRouter } from 'vue-router'
 import { useCookies } from '@/composables/useCookies'
+import { io } from 'socket.io-client';
+
+const formErrors = reactive<FormErrorsOTP>({
+    otp: [],
+});
+
+const handleValidation = (errors: FormErrorsOTP) => {
+    formErrors.otp = errors.otp || []
+};
+
+const socket = io(`${import.meta.env.VITE_API_URL}/otp-activation`);
+if (!socket) {
+    throw new Error('Socket not provided');
+}
+
+onMounted(() => {
+    socket.on('connect', () => {
+        console.log('socket connected (setup)');
+    });
+    socket.on('validation', (data: { errors: FormErrorsOTP; success: boolean }) => {
+        console.log(data);
+        handleValidation(data.errors);
+    });
+});
+
+onBeforeUnmount(() => {
+    socket.off('connect');
+    socket.off('validation');
+});
+
+function validateField(payload: { otp?: string }) {
+    socket.emit('validation', {
+        otp: payload.otp, token: token
+    });
+}
+
+const onOtpInput = (index: number, event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    value.value[index] = val;
+
+    const otpValue = value.value.join('');
+    validateField({ otp: otpValue });
+}
+
+const isOtpError = computed(() => {
+    return (formErrors.otp ?? []).length > 0;
+});
 
 const cookies = useCookies()
 
@@ -71,7 +119,8 @@ function onSubmit() {
                     @complete="handleComplete">
                     <PinInputGroup class="gap-1">
                         <template v-for="(id, index) in 4" :key="id">
-                            <PinInputSlot class="rounded-md border" :index="index" />
+                            <PinInputSlot :class="{ 'rounded-md border': true, 'border-red-500': isOtpError }"
+                                :index="index" @input="onOtpInput(index, $event)" />
                             <template v-if="index !== 3">
                                 <PinInputSeparator />
                             </template>
@@ -79,7 +128,7 @@ function onSubmit() {
                     </PinInputGroup>
                 </PinInput>
                 <Button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 w-50 mx-auto">Verification</Button>
+                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 mx-auto w-[54%]">Verification</Button>
             </form>
         </div>
     </section>
