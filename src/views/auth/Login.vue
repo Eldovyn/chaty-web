@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { AiOutlineEye } from 'vue-icons-lib/ai'
-import { ref, reactive, computed } from "vue"
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue"
 import { AiOutlineEyeInvisible } from 'vue-icons-lib/ai'
 import { useMutation } from '@tanstack/vue-query'
 import { AxiosError } from 'axios'
@@ -12,6 +12,53 @@ import { axiosInstance } from '@/lib/axios'
 import { toast } from 'vue-sonner'
 import { useRouter } from 'vue-router'
 import { useCookies } from '@/composables/useCookies'
+import { io } from 'socket.io-client';
+
+const formErrors = reactive<FormErrorsLogin>({
+    email: [],
+    password: [],
+});
+
+const socket = io(`${import.meta.env.VITE_API_URL}/validate-login`);
+if (!socket) {
+    throw new Error('Socket not provided');
+}
+
+onMounted(() => {
+    socket.on('connect', () => {
+        console.log('socket connected (setup)');
+    });
+    socket.on('validation', (data: { errors: FormErrorsLogin; success: boolean }) => {
+        handleValidation(data.errors);
+    });
+});
+
+onBeforeUnmount(() => {
+    socket.off('connect');
+    socket.off('validation');
+});
+
+function validateField(payload: { email?: string; password?: string }) {
+    socket.emit('validation', {
+        email: payload.email ?? inputFormLogin.email,
+        password: payload.password ?? inputFormLogin.password,
+        provider: 'auth_internal'
+    });
+}
+
+const onEmailInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    inputFormLogin.email = val;
+    validateField({ email: val });
+}
+
+const onPasswordInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
+    inputFormLogin.password = val;
+    validateField({ password: val });
+}
 
 const cookies = useCookies()
 
@@ -33,14 +80,10 @@ const inputFormLogin = reactive<LoginInput>({
     provider: ''
 })
 
-const formErrors = reactive<FormErrorsRegister>({
-    email: [],
-    password: [],
-});
-
 const isEmailError = computed(() => {
     return (formErrors.email ?? []).length > 0;
 });
+
 const isPasswordError = computed(() => {
     return (formErrors.password ?? []).length > 0;
 });
@@ -71,22 +114,14 @@ const passwordErrorMessage = computed(() => {
 
 const isSubmitting = ref(false)
 
-const handleValidation = (errors: FormErrorsRegister) => {
+const handleValidation = (errors: FormErrorsLogin) => {
     formErrors.email = errors.email || []
-    formErrors.username = errors.username || []
     formErrors.password = errors.password || []
-    formErrors.confirm_password = errors.confirm_password || []
-    formErrors.password_security = errors.password_security || []
-    formErrors.password_match = errors.password_match || []
 };
 
 const clearValidation = () => {
     formErrors.email = []
-    formErrors.username = []
     formErrors.password = []
-    formErrors.confirm_password = []
-    formErrors.password_security = []
-    formErrors.password_match = []
 }
 
 const clearForm = () => {
@@ -112,10 +147,6 @@ const { mutate } = useMutation({
             handleValidation({
                 email: err.response?.data?.errors?.email ?? [],
                 password: err.response?.data?.errors?.password ?? [],
-                username: err.response?.data?.errors?.username ?? [],
-                confirm_password: err.response?.data?.errors?.confirm_password ?? [],
-                password_security: err.response?.data?.errors?.password_security ?? [],
-                password_match: err.response?.data?.errors?.password_match ?? [],
             });
             toast.error(err.response?.data?.message);
             return;
@@ -156,7 +187,7 @@ function onSubmit() {
                 <div class="input-email w-full flex flex-col gap-1 mb-5">
                     <Label for="email">Email</Label>
                     <Input type="text" v-model="inputFormLogin.email" placeholder="your email"
-                        :class="{ 'border border-red-500': isEmailError }" />
+                        :class="{ 'border border-red-500': isEmailError }" @input="onEmailInput" />
                     <p v-if="isEmailError" class="text-[10px] text-right me-3 text-[#C10007]">
                         {{ emailErrorMessage }}
                     </p>
@@ -166,7 +197,7 @@ function onSubmit() {
                     <div class="relative">
                         <Input id="password" v-model="inputFormLogin.password"
                             :type="showPassword ? 'text' : 'password'" placeholder="your password"
-                            :class="{ 'border border-red-500': isPasswordError }" />
+                            @input="onPasswordInput" :class="{ 'border border-red-500': isPasswordError }" />
                         <button type="button"
                             class="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer">
                             <AiOutlineEye @click="togglePassword" v-if="!showPassword" class="w-4 h-4" />
