@@ -23,7 +23,8 @@ router.beforeEach(async (to, from, next) => {
     const accessToken = cookies.get('access_token')
     const token = to.query.token as string | undefined
 
-    if (to.meta.requiresAuth && !accessToken) {
+    if (to.meta.requiresAuth && !accessToken || accessToken === 'undefined') {
+        cookies.remove('access_token')
         return next('/login')
     }
 
