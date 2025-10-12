@@ -10,7 +10,7 @@ const routes = [
     { path: '/register', component: Register, meta: { sidebar: false } },
     { path: '/login', component: Login, meta: { sidebar: false } },
     { path: '/', component: Home, meta: { sidebar: true, requiresAuth: false } },
-    { path: '/account-active', component: AccountActive, meta: { sidebar: false } },
+    { path: '/account-active', component: AccountActive, meta: { sidebar: false } }
 ]
 
 const router = createRouter({

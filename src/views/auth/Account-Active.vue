@@ -14,6 +14,14 @@ import {
 import { useRoute, useRouter } from 'vue-router'
 import { useCookies } from '@/composables/useCookies'
 import { io } from 'socket.io-client';
+import { useAccountActivation } from "@/composables/useAccountActivation";
+import { formatTime } from '@/utils/formatTime'
+
+const { remaining } = useAccountActivation();
+
+const duration = computed(() => {
+    return formatTime(remaining.value || 0);
+});
 
 const formErrors = reactive<FormErrorsOTP>({
     otp: [],
@@ -128,7 +136,10 @@ function onSubmit() {
                     </PinInputGroup>
                 </PinInput>
                 <Button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 mx-auto w-[54%]">Verification</Button>
+                    class="bg-blue-600 hover:bg-blue-700 cursor-pointer mb-3 mx-auto w-[45%] flex justify-between">
+                    <p>Verification</p>
+                    <p>{{ duration }}</p>
+                </Button>
             </form>
         </div>
     </section>
