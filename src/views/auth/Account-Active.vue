@@ -84,6 +84,10 @@ const goToHome = async () => {
     router.push('/')
 }
 
+const goToLogin = async () => {
+    router.push('/login')
+}
+
 const isSubmitting = ref(false)
 
 const apiVerification = async (input: string) => {
@@ -98,6 +102,11 @@ const { mutate } = useMutation({
     },
     onError: (error) => {
         const err = error as AxiosError<ErrorResponse>;
+        if (err.response?.status === 404) {
+            goToLogin();
+            toast.error((err.response?.data?.message as string) || '');
+            return;
+        }
         toast.error((err.response?.data?.message as string) || '');
         return;
     },
